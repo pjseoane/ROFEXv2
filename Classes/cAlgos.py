@@ -7,11 +7,13 @@ class cRobot():
         self.c2=contract2
 
         #self.goRobot()
-        threading.Thread(target=self.goRobot,daemon=True).start()
+       # threading.Thread(target=self.goRobot,daemon=True).start()
 
     def goRobot(self):
-        print (self.c1.md[-1]," mensajes>>>>>:", len(self.c1.md))
-        print (self.c2.md[-1],"mensajes>>>>>>:", len(self.c2.md))
+        while True:
+            print ("En Algos")
+            print (self.c1.md[-1]," mensajes>>>>>:", len(self.c1.md))
+            print (self.c2.md[-1],"mensajes>>>>>>:", len(self.c2.md))
 
 
 
