@@ -56,7 +56,7 @@ def main():
         print("Start Time: ", start)
 
 
-        #threads de decolado sacan 1/ 3 seg
+        #threads de decolado sacan 1 cada 3 seg
         for i in range (2):
             t= threading.Thread(target=decolar,args=(3,))
             #dec.setName("Decolar")

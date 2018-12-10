@@ -1,7 +1,7 @@
 import threading
 import sys
-#sys.path.append('C:/Users/pauli/Documents/Python Projects/ROFEX/Classes')
-sys.path.append('C:/Users/pseoane/Documents/Python Projects/ROFEXv2/Classes')
+sys.path.append('C:/Users/pauli/Documents/Python Projects/ROFEXv2/Classes')
+#sys.path.append('C:/Users/pseoane/Documents/Python Projects/ROFEXv2/Classes')
 from Classes import cSetUpEntorno as env
 from Classes import cSuscriptV2 as sus
 from Classes import cAlgos as bot
