@@ -82,6 +82,7 @@ class cSuscription():
             if msgType == 'MD':
 
                 self.incomingMD()
+                self.updateMatrix()
                 self.goRobot2()
 
 
@@ -180,17 +181,27 @@ class cSuscription():
         #    worker.start()
         #----------------
         return
+    def updateMatrix(self):
+        row = self.symbols.index(self.sym)
+        # update that row
+        self.matrix[row][1] = self.bid
+        self.matrix[row][2] = self.offer
+        self.matrix[row][3] = self.bidSize
+        self.matrix[row][4] = self.offerSize
+        self.matrix[row][5] = self.numMessages
+        self.matrix[row][6] = self.timestamp
+        return
 
     def goRobot2(self):
         #buscar en row de la matrix loe corresponde a ese mensaje
-        row= self.symbols.index(self.sym)
+        #row= self.symbols.index(self.sym)
         #update that row
-        self.matrix[row][1]=self.bid
-        self.matrix[row][2]=self.offer
-        self.matrix[row][3]=self.bidSize
-        self.matrix[row][4]=self.offerSize
-        self.matrix[row][5] = self.numMessages
-        self.matrix[row][6] = self.timestamp
+        #self.matrix[row][1]=self.bid
+        #self.matrix[row][2]=self.offer
+        #self.matrix[row][3]=self.bidSize
+        #self.matrix[row][4]=self.offerSize
+        #self.matrix[row][5] = self.numMessages
+        #self.matrix[row][6] = self.timestamp
 
         print("En goRobot 2******->\n", self.matrix,"\n")
         print("Index en USD: ",self.matrix[1][2]/self.matrix[0][1],"\n")
