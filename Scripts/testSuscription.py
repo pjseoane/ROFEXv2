@@ -16,8 +16,8 @@ def pintToScreen():
 
 def main():
     user1=env.cROFEXSetUp()
-    x1=sus.cSuscription(user1,["DODic18"])
-    x2=sus.cSuscription(user1,["RFX20Dic18"])
+    x1=sus.cSuscription(user1,["DOMar19"])
+    x2=sus.cSuscription(user1,["RFX20Mar19"])
 
     bot1= bot.cRobot(x1,x2)
     goBot=threading.Thread(target=bot1.goRobot,name="goRobot",args=(),daemon=True)
