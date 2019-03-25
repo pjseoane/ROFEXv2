@@ -210,7 +210,7 @@ class cSuscription():
         self.availableOffer = min(self.matrix[1][2] * self.matrix[1][4] / self.matrix[0][1] / 1000,
                                   self.matrix[0][1] * self.matrix[0][3] * 1000 / self.matrix[1][2])
 
-        print("Index en USD: ",self.matrix[1][1]/self.matrix[0][2]," / ",self.matrix[1][2]/self.matrix[0][1],"size :",self.availableBid , "/", self.availableOffer)
+        print("Index en USD: ",self.matrix[1][1]/self.matrix[0][2]," / ",self.matrix[1][2]/self.matrix[0][1],"size :",self.availableBid , "x", self.availableOffer)
 
        # print("Available Size: ",)
         #print ("Size       : ", self.matrix[1][3],self.matrix[0][4], " / ", self.matrix[1][4],self.matrix[0][3])
