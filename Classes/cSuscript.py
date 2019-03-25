@@ -2,6 +2,7 @@ import requests
 import websocket
 import threading
 import simplejson
+
 from time import sleep
 from Classes import cSetUpEntorno as cSetup
 from itertools import count #itertools es para contar la cantidad de instancias de una clase
@@ -204,7 +205,16 @@ class cSuscription():
         #self.matrix[row][6] = self.timestamp
 
         print("En goRobot 2******->\n", self.matrix,"\n")
-        print("Index en USD: ",self.matrix[1][2]/self.matrix[0][1],"\n")
+        self.availableBid = min(self.matrix[1][1] * self.matrix[1][3] / self.matrix[0][2] / 1000,
+                                self.matrix[0][2] * self.matrix[0][4] * 1000 / self.matrix[1][1])
+        self.availableOffer = min(self.matrix[1][2] * self.matrix[1][4] / self.matrix[0][1] / 1000,
+                                  self.matrix[0][1] * self.matrix[0][3] * 1000 / self.matrix[1][2])
+
+        print("Index en USD: ",self.matrix[1][1]/self.matrix[0][2]," / ",self.matrix[1][2]/self.matrix[0][1],"size :",self.availableBid , "/", self.availableOffer)
+
+       # print("Available Size: ",)
+        #print ("Size       : ", self.matrix[1][3],self.matrix[0][4], " / ", self.matrix[1][4],self.matrix[0][3])
+
         return
 
 
