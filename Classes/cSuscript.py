@@ -7,10 +7,10 @@ from time import sleep
 from Classes import cSetUpEntorno as cSetup
 from itertools import count #itertools es para contar la cantidad de instancias de una clase
 
-
+from Classes import cRofexMessage as rMsg
 from Classes import cPrintToGoogleSheets as gs
-path='C:/Users/pauli/'
-#path='C:/Users/pseoane/'
+#path='C:/Users/pauli/'
+path='C:/Users/pseoane/'
 
 jsonFile=path+'Documents/Python Projects/ROFEXv2/Classes/client_rofex.json'
 b=gs.cGoogleSetup(jsonFile,"ROFEX-API")
@@ -75,10 +75,23 @@ class cSuscription():
 
     def on_message(self, message):
         self.numMessages += 1
+
+
+
         try:
+
+            # -----------------------
+            print("Test rTEST")
+            rTEST = rMsg.cRofexMessage(message)
+            rTEST.printMessage()
+            # -----------------------
+
+
+
             # Valido Mensaje entrante
             self.msg = simplejson.loads(message)
             self.messages.append(self.msg)
+            print(self.msg)
 
             msgType = self.msg['type'].upper()
 
@@ -207,12 +220,18 @@ class cSuscription():
         #self.matrix[row][6] = self.timestamp
 
         print("En goRobot 2******->\n", self.matrix,"\n")
-        self.availableBid = str(round(min(self.matrix[1][1] * self.matrix[1][3] / self.matrix[0][2] / 1000,
-                                self.matrix[0][2] * self.matrix[0][4] * 1000 / self.matrix[1][1]),2))
-        self.availableOffer = str(round(min(self.matrix[1][2] * self.matrix[1][4] / self.matrix[0][1] / 1000,
-                                  self.matrix[0][1] * self.matrix[0][3] * 1000 / self.matrix[1][2]),2))
+        self.indexBid=self.matrix[1][1]/self.matrix[0][2]
+        self.indexOffer=self.matrix[1][2]/self.matrix[0][1]
 
-        print("Index en USD: ",self.matrix[1][1]/self.matrix[0][2]," / ",self.matrix[1][2]/self.matrix[0][1],"size :",self.availableBid , "x", self.availableOffer)
+
+        self.availableBid = round(min(self.matrix[1][1] * self.matrix[1][3] / self.matrix[0][2] / 1000,
+                                self.matrix[0][2] * self.matrix[0][4] * 1000 / self.matrix[1][1]),2)
+        self.availableOffer = round(min(self.matrix[1][2] * self.matrix[1][4] / self.matrix[0][1] / 1000,
+                                  self.matrix[0][1] * self.matrix[0][3] * 1000 / self.matrix[1][2]),2)
+
+        self.midMarket      = (self.indexBid+self.indexOffer)/2
+
+        print("Index en USD: ",self.indexBid," / ",self.indexOffer,"size :",str(self.availableBid) , "x", str(self.availableOffer),"----->",str(round(self.midMarket*0.995,2)),"/",str(round(self.midMarket*1.005,2))," SIZE:----> " ,str(round(self.availableBid,0)),"xx",str(round(self.availableOffer,0)))
 
        # print("Available Size: ",)
         #print ("Size       : ", self.matrix[1][3],self.matrix[0][4], " / ", self.matrix[1][4],self.matrix[0][3])

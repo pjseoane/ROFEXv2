@@ -1,7 +1,10 @@
 import sys
+
+
+
 global path
-path= 'C:/Users/pauli/'
-#path= 'C:Users/pseoane'
+#path= 'C:/Users/pauli/'
+path= 'C:Users/pseoane'
 
 sys.path.append(path+'Documents/Python Projects/ROFEXv2/Classes/')
 #sys.path.append('C:/Users/pauli/Documents/Python Projects/ROFEX/Classes')
@@ -12,6 +15,7 @@ from Classes import cSuscript as sus
 user1=env.cROFEXSetUp()
 print(user1.instrumentos())
 user1.newSingleOrder("ROFX","DoDic19","56.90","10","LIMIT","SELL","DAY",user1.account,"TRUE")
+print("New Single order OK")
 user1.consultarOrdenesActivas(user1.account)
 user1.consultarOrdenesAllClientOrder(user1.account)
 
