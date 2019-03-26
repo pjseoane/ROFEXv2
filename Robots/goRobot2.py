@@ -1,6 +1,11 @@
 import sys
-sys.path.append('C:/Users/pauli/Documents/Python Projects/ROFEX/Classes')
-sys.path.append('C:/Users/pseoane/Documents/Python Projects/ROFEXv2/Classes')
+global path
+path= 'C:/Users/pauli/'
+#path= 'C:Users/pseoane'
+
+sys.path.append(path+'Documents/Python Projects/ROFEXv2/Classes/')
+#sys.path.append('C:/Users/pauli/Documents/Python Projects/ROFEX/Classes')
+#sys.path.append('C:/Users/pseoane/Documents/Python Projects/ROFEXv2/Classes')
 from Classes import cSetUpEntorno as env
 from Classes import cSuscript as sus
 
