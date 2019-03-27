@@ -16,10 +16,10 @@ b=gs.cGoogleSetup(jsonFile,"ROFEX-API")
 class cSuscription():
     _ids = count(0)
 
-    def __init__(self, user,symbols):
+    def __init__(self, user,symbol):
         self.id = next(self._ids)  # se cuenta la cantidad de instancias de una clase para imprimir en gsheets
         self.user=user
-        self.symbols=symbols
+        self.symbols=symbol
         self.messages=[]
         self.md=[]
         self.numMessages=0

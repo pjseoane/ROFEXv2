@@ -9,8 +9,8 @@ from itertools import count #itertools es para contar la cantidad de instancias 
 
 from Classes import cRofexMessage as rMsg
 from Classes import cPrintToGoogleSheets as gs
-#path='C:/Users/pauli/'
-path='C:/Users/pseoane/'
+path='C:/Users/pauli/'
+#path='C:/Users/pseoane/'
 
 jsonFile=path+'Documents/Python Projects/ROFEXv2/Classes/client_rofex.json'
 b=gs.cGoogleSetup(jsonFile,"ROFEX-API")
@@ -31,8 +31,6 @@ class cSuscription():
         width=10
         heigth=len(symbols)
         self.matrix=[[0 for x in range(width)] for y in range(heigth)]
-
-
 
         self.runWS()
 
@@ -76,22 +74,18 @@ class cSuscription():
     def on_message(self, message):
         self.numMessages += 1
 
-
-
         try:
 
             # -----------------------
             print("Test rTEST")
             rTEST = rMsg.cRofexMessage(message)
-            rTEST.printMessage()
+            rTEST.getLastMessage()
             # -----------------------
-
-
 
             # Valido Mensaje entrante
             self.msg = simplejson.loads(message)
             self.messages.append(self.msg)
-            print(self.msg)
+            #print("En cSuscript",self.msg)
 
             msgType = self.msg['type'].upper()
 
