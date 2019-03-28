@@ -38,9 +38,6 @@ class cSuscription():
         self.sym=""
 
 
-
-
-
         #for goRobot2 2D Array or list of lists for storing the latest message of each contract
         width=10
         heigth=len(symbols)
@@ -92,10 +89,10 @@ class cSuscription():
 
             # -----------------------
             print("Test rTEST")
-            self.rTEST = rMsg.cRofexMessage(message)
+            rTEST = rMsg.cRofexMessage(message)
             #self.rTEST.getLastMessage()
-            self.md.append(self.rTEST.getLastMessage())
-
+            # self.md.append(rTEST.getLastMessage())
+            # print("rTEST last Message: ",self.md)
 
 
             # -----------------------
@@ -121,7 +118,7 @@ class cSuscription():
                 print("Tipo de Mensaje Recibido No soportado: " + self.msg)
         except:
             # print("Error al procesar mensaje recibido:--->>> " + msg)
-            print("Error al procesar mensaje recibido:--->>> " + self.msg)
+            print("Error al procesar mensaje recibido:--->>> ", self.msg)
 
     def on_error(self, error):
         print("Salio por error: ",error)
