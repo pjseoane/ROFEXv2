@@ -2,12 +2,15 @@ import sys
 
 
 global path
-#path= 'C:/Users/pauli/'
-path= 'C:Users/pseoane'
+path= 'C:/Users/pauli/'
+#path= 'C:Users/pseoane'
 
-sys.path.append(path+'Documents/Python Projects/ROFEXv2/Classes/')
-from Classes import cSetUpEntorno as env
-from Classes import cSuscript as sus
+sys.path.append(path+'Documents/Python Projects/ROFEXv2/Classes')
+
+import Classes.cSetUpEntorno as env
+import Classes.cSuscript as sus
+#from Classes import cSetUpEntorno as env
+#from Classes import cSuscript as sus
 
 user1=env.cROFEXSetUp()
 print(user1.instrumentos())

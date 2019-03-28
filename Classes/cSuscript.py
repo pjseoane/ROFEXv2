@@ -9,8 +9,8 @@ from itertools import count #itertools es para contar la cantidad de instancias 
 
 from Classes import cRofexMessage as rMsg
 from Classes import cPrintToGoogleSheets as gs
-#path='C:/Users/pauli/'
-path='C:/Users/pseoane/'
+path='C:/Users/pauli/'
+#path='C:/Users/pseoane/'
 
 jsonFile=path+'Documents/Python Projects/ROFEXv2/Classes/client_rofex.json'
 b=gs.cGoogleSetup(jsonFile,"ROFEX-API")
@@ -78,8 +78,12 @@ class cSuscription():
 
             # -----------------------
             print("Test rTEST")
-            rTEST = rMsg.cRofexMessage(message)
-            rTEST.getLastMessage()
+            self.rTEST = rMsg.cRofexMessage(message)
+            #self.rTEST.getLastMessage()
+            self.md.append(self.rTEST.getLastMessage())
+
+
+
             # -----------------------
 
             # Valido Mensaje entrante
@@ -123,7 +127,7 @@ class cSuscription():
 
     def incomingMD(self):
 
-        self.timestamp = self.msg['timestamp']
+        timestamp = self.msg['timestamp']
         self.sym = self.msg['instrumentId']['symbol']
         # Aca hay un problema si no hay bid u offer pq solo viene ['marketData']
         self.bidMsg = self.msg['marketData']['BI']
@@ -146,7 +150,7 @@ class cSuscription():
             self.offerSize = self.msg['marketData']['OF'][0]['size']
 
 
-        self.md.append([self.timestamp,self.sym,self.bid,self.offer,self.bidSize,self.offerSize,self.numMessages])
+        self.md.append([timestamp,self.sym,self.bid,self.offer,self.bidSize,self.offerSize,self.numMessages])
         #print("MD Array :",self.md[-1])
         #return
 
@@ -191,6 +195,7 @@ class cSuscription():
         #    worker.start()
         #----------------
         return
+
     def updateMatrix(self):
         row = self.symbols.index(self.sym)
         # update that row

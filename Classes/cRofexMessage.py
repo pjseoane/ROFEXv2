@@ -10,7 +10,7 @@ class cRofexMessage():
         self.id = next(self._ids)  # se cuenta la cantidad de instancias de una clase
 
         self.msg        = simplejson.loads(message)
-        self.md         = []
+        #self.md         = []
         self.msgType       = self.msg['type'].upper()
 
         if self.msgType == 'MD':
@@ -55,11 +55,13 @@ class cRofexMessage():
     def processMessage(self):
 
         print("Process msg OK")
-        self.md.append([self.msgType,self.timestamp, self.marketId,self.sym, self.bid, self.offer, self.bidSize, self.offerSize, self.id])
+        #self.md.append([self.msgType,self.timestamp, self.marketId,self.sym, self.bid, self.offer, self.bidSize, self.offerSize, self.id])
 
     def printMessage(self):
         #print ("Print Method: ",self.type,self.timestamp, self.marketId,self.sym, self.bid, self.offer, self.bidSize, self.offerSize, self.id)
         print ("Print method Array: ",self.md)
 
     def getLastMessage(self):
-        print("Last Message :",self.md[-1])
+        return (self.msg)
+        #print("Last Message :",self.md[-1])
+        #print ("Last Message :",self.msg)
