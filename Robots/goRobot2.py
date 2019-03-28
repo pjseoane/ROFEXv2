@@ -5,7 +5,7 @@ global path
 path= 'C:/Users/pauli/'
 #path= 'C:Users/pseoane'
 
-sys.path.append(path+'Documents/Python Projects/ROFEXv2/Classes')
+sys.path.append(path+'Documents/Python Projects/ROFEXv2')
 
 import Classes.cSetUpEntorno as env
 import Classes.cSuscript as sus
