@@ -23,7 +23,6 @@ class cSuscription():
         self.messages=[]
         self.md=[]
         self.numMessages=0
-        self.rTest=rMsg.cRofexMessage()
 
         #self.ticker1=ticker1
         #self.ticker2=ticker2
@@ -58,21 +57,21 @@ class cSuscription():
 
                 sleep(1)  # y nada
 
-
     # def p(self):
     #     print("Cantidad Productos Suscriptos",self.id+1," ", self.user.token)
 
     #def runWS(self):
 
+
     def on_message(self, message):
         self.numMessages += 1
-      #  self.rTEST=rMsg.cRofexMessage()
+
         try:
 
             print("Test rTEST")
-            self.rTEST = rMsg.cRofexMessage(message)
-            # self.rTEST.getLastMessage()
-            self.md.append(self.rTEST.getLastMessage())
+            q = rMsg.cRofexMessage(message)
+            self.md.append(q.getLastMessage())
+
 
 
         except:
