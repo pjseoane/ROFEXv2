@@ -2,8 +2,8 @@ import sys
 
 
 global path
-path= 'C:/Users/pauli/'
-#path= 'C:Users/pseoane'
+#path= 'C:/Users/pauli/'
+path= 'C:Users/pseoane'
 
 sys.path.append(path+'Documents/Python Projects/ROFEXv2')
 

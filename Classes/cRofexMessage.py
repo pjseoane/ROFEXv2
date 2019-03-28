@@ -32,7 +32,7 @@ class cRofexMessage():
         bidMsg = self.msg['marketData']['BI']
         offerMsg = self.msg['marketData']['OF']
 
-        if not self.bidMsg:
+        if not bidMsg:
             # >No BID detected")
             bid = 0
             bidSize = 0
@@ -40,7 +40,7 @@ class cRofexMessage():
             bid = self.msg['marketData']['BI'][0]['price']
             bidSize = self.msg['marketData']['BI'][0]['size']
 
-        if not self.offerMsg:
+        if not offerMsg:
             # >No OFFER detected")
             offer = 0
             offerSize = 0

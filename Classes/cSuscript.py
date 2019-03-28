@@ -9,8 +9,8 @@ from itertools import count #itertools es para contar la cantidad de instancias 
 
 from Classes import cRofexMessage as rMsg
 from Classes import cPrintToGoogleSheets as gs
-path='C:/Users/pauli/'
-#path='C:/Users/pseoane/'
+#path='C:/Users/pauli/'
+path='C:/Users/pseoane/'
 
 jsonFile=path+'Documents/Python Projects/ROFEXv2/Classes/client_rofex.json'
 b=gs.cGoogleSetup(jsonFile,"ROFEX-API")
@@ -27,6 +27,20 @@ class cSuscription():
         self.md=[]
         self.numMessages=0
 
+        self.bid=0
+        self.offer=0
+        self.bidSize=0
+        self.offerSize=0
+        self.numMessages=0
+        self.timestamp=0
+        self.indexBid=0
+        self.indexOffer=0
+        self.sym=""
+
+
+
+
+
         #for goRobot2 2D Array or list of lists for storing the latest message of each contract
         width=10
         heigth=len(symbols)
@@ -39,21 +53,21 @@ class cSuscription():
 
     def runWS(self):
         headers = {'X-Auth-Token:{token}'.format(token=self.user.token)}
-        self.ws = websocket.WebSocketApp(self.user.activeWSEndpoint,
+        ws = websocket.WebSocketApp(self.user.activeWSEndpoint,
                                          on_message=self.on_message,
                                          on_error=self.on_error,
                                          on_close=self.on_close,
                                          on_open=self.on_open,
                                          header=headers)
 
-        wst = threading.Thread(target=self.ws.run_forever, kwargs={"ping_interval": 5})
+        wst = threading.Thread(target=ws.run_forever, kwargs={"ping_interval": 5})
         wst.start()
         # Esperamos a que la conexion ws se establezca
         conn_timeout = 5
         # conn_timeout = 50 #y nada
         sleep(1)
 
-        while not self.ws.sock.connected and conn_timeout:
+        while not ws.sock.connected and conn_timeout:
             sleep(1)
             conn_timeout -= 1
         else:
@@ -63,8 +77,8 @@ class cSuscription():
                 i+=1
 
 
-                aaa = self.buildMessage(self.sym)
-                self.ws.send(aaa)
+                aaa = self.buildMessage()
+                ws.send(aaa)
 
                 print("Sent Suscription msg", self.sym)
                 #print("Receiving...", )
@@ -121,39 +135,33 @@ class cSuscription():
         #print("WS Conection Open...")
 
 
-    def buildMessage(self, sym):
-        return "{\"type\":\"" + self.user.type_ + "\",\"level\":" + self.user.level_ + ", \"entries\":[\"BI\", \"OF\"],\"products\":[{\"symbol\":\"" + sym + "\",\"marketId\":\"" + self.user.marketId_ + "\"}]}"
+    def buildMessage(self):
+        return "{\"type\":\"" + self.user.type_ + "\",\"level\":" + self.user.level_ + ", \"entries\":[\"BI\", \"OF\"],\"products\":[{\"symbol\":\"" + self.sym + "\",\"marketId\":\"" + self.user.marketId_ + "\"}]}"
 
 
     def incomingMD(self):
 
-        timestamp = self.msg['timestamp']
+        self.timestamp = self.msg['timestamp']
         self.sym = self.msg['instrumentId']['symbol']
         # Aca hay un problema si no hay bid u offer pq solo viene ['marketData']
-        self.bidMsg = self.msg['marketData']['BI']
-        self.offerMsg = self.msg['marketData']['OF']
+        bidMsg = self.msg['marketData']['BI']
+        offerMsg = self.msg['marketData']['OF']
 
-        if self.bidMsg == []:
-            # >No BID detected")
-            self.bid = 0
-            self.bidSize = 0
-        else:
+        if bidMsg != []:
+
             self.bid = self.msg['marketData']['BI'][0]['price']
             self.bidSize = self.msg['marketData']['BI'][0]['size']
 
-        if self.offerMsg == []:
-            # >No OFFER detected")
-            self.offer = 0
-            self.offerSize = 0
-        else:
+        if offerMsg != []:
+
             self.offer = self.msg['marketData']['OF'][0]['price']
             self.offerSize = self.msg['marketData']['OF'][0]['size']
 
 
-        self.md.append([timestamp,self.sym,self.bid,self.offer,self.bidSize,self.offerSize,self.numMessages])
+        self.md.append([self.timestamp,self.sym,self.bid,self.offer,self.bidSize,self.offerSize,self.numMessages])
         #print("MD Array :",self.md[-1])
         #return
-
+        print("Ok Incoming MD:")
 
     def getBid(self):
         return self.bid
@@ -205,7 +213,7 @@ class cSuscription():
         self.matrix[row][4] = self.offerSize
         self.matrix[row][5] = self.numMessages
         self.matrix[row][6] = self.timestamp
-        return
+        #return
 
     def goRobot2(self):
         #buscar en row de la matrix loe corresponde a ese mensaje
@@ -219,13 +227,20 @@ class cSuscription():
         #self.matrix[row][6] = self.timestamp
 
         print("En goRobot 2******->\n", self.matrix,"\n")
-        self.indexBid=self.matrix[1][1]/self.matrix[0][2]
-        self.indexOffer=self.matrix[1][2]/self.matrix[0][1]
+
+        if self.matrix[0][2] !=0:
+            self.indexBid=self.matrix[1][1]/self.matrix[0][2]
+
+        if self.matrix[0][1] !=0:
+            self.indexOffer=self.matrix[1][2]/self.matrix[0][1]
 
 
-        self.availableBid = round(min(self.matrix[1][1] * self.matrix[1][3] / self.matrix[0][2] / 1000,
+        if self.matrix[0][2] !=0 and self.matrix[1][1] !=0:
+            self.availableBid = round(min(self.matrix[1][1] * self.matrix[1][3] / self.matrix[0][2] / 1000,
                                 self.matrix[0][2] * self.matrix[0][4] * 1000 / self.matrix[1][1]),2)
-        self.availableOffer = round(min(self.matrix[1][2] * self.matrix[1][4] / self.matrix[0][1] / 1000,
+
+        if self.matrix[0][1] != 0 and self.matrix[1][2] !=0:
+            self.availableOffer = round(min(self.matrix[1][2] * self.matrix[1][4] / self.matrix[0][1] / 1000,
                                   self.matrix[0][1] * self.matrix[0][3] * 1000 / self.matrix[1][2]),2)
 
         self.midMarket      = (self.indexBid+self.indexOffer)/2
@@ -235,7 +250,7 @@ class cSuscription():
        # print("Available Size: ",)
         #print ("Size       : ", self.matrix[1][3],self.matrix[0][4], " / ", self.matrix[1][4],self.matrix[0][3])
 
-        return
+        # return
 
 
     def printAIOinGS(self):
