@@ -9,8 +9,8 @@ from itertools import count #itertools es para contar la cantidad de instancias 
 
 from Classes import cRofexMessage as rMsg
 from Classes import cPrintToGoogleSheets as gs
-#path='C:/Users/pauli/'
-path='C:/Users/pseoane/'
+path='C:/Users/pauli/'
+# path='C:/Users/pseoane/'
 
 jsonFile=path+'Documents/Python Projects/ROFEXv2/Classes/client_rofex.json'
 b=gs.cGoogleSetup(jsonFile,"ROFEX-API")

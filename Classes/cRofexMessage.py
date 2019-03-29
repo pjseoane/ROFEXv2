@@ -8,16 +8,27 @@ class cRofexMessage():
 
     def __init__ (self, message):
 
+        self.bid = 0
+        self.offer = 0
+        self.bidSize = 0
+        self.offerSize = 0
+        self.numMessages = 0
+        self.timestamp = 0
+        self.indexBid = 0
+        self.indexOffer = 0
+        self.sym = ""
+        self.marketId= ""
+
         self.id = next(self._ids)  # se cuenta la cantidad de instancias de una clase
 
-        self.msg        = simplejson.loads(message)
-        self.msgType       = self.msg['type'].upper()
+        self.msg = simplejson.loads(message)
+        msgType = self.msg['type'].upper()
 
-        if self.msgType == 'MD':
+        if msgType == 'MD':
             self.incomingMD()
             self.processMessage()
 
-        elif self.msgType == 'OR':
+        elif msgType == 'OR':
             print("En Mensaje OR")
             print(self.msg)
         else:
@@ -25,31 +36,40 @@ class cRofexMessage():
 
 
     def incomingMD(self):
-        timestamp = self.msg['timestamp']
-        marketId = self.msg['instrumentId']['marketId']
-        sym = self.msg['instrumentId']['symbol']
+
+        self.timestamp = self.msg['timestamp']
+        self.marketId = self.msg['instrumentId']['marketId']
+        self.sym = self.msg['instrumentId']['symbol']
         # Aca hay un problema si no hay bid u offer pq solo viene ['marketData']
         bidMsg = self.msg['marketData']['BI']
         offerMsg = self.msg['marketData']['OF']
 
-        if not bidMsg:
-            # >No BID detected")
-            bid = 0
-            bidSize = 0
-        else:
-            bid = self.msg['marketData']['BI'][0]['price']
-            bidSize = self.msg['marketData']['BI'][0]['size']
+        if bidMsg:
 
-        if not offerMsg:
-            # >No OFFER detected")
-            offer = 0
-            offerSize = 0
-        else:
-            offer = self.msg['marketData']['OF'][0]['price']
-            offerSize = self.msg['marketData']['OF'][0]['size']
+            self.bid = self.msg['marketData']['BI'][0]['price']
+            self.bidSize = self.msg['marketData']['BI'][0]['size']
 
-            # print("Object MD() cRofexMessage created")
-            # print("En cRofexMessage ", self.msg)
+        if offerMsg:
+
+            self.offer = self.msg['marketData']['OF'][0]['price']
+            self.offerSize = self.msg['marketData']['OF'][0]['size']
+
+        # print("Object MD() cRofexMessage created")
+        # print("En cRofexMessage ", self.msg)
+        self.md.append(self.getLastMessage())
+        print("Len md en cRofexMessage:", len(self.md))
+
+    def getBid(self):
+        return (self.bid)
+
+    def getBidSize(self):
+        return (self.bidSize)
+
+    def getOffer(self):
+        return (self.offer)
+
+    def getOfferSize(self):
+        return (self.offerSize)
 
 
     def processMessage(self):

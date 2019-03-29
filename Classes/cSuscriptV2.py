@@ -1,7 +1,7 @@
 import websocket
 import threading
 import Classes.cRofexMessage as rMsg
-#from Classes import cRofexMessage as rMsg
+
 from time import sleep
 from itertools import count #itertools es para contar la cantidad de instancias de una clase
 
@@ -15,20 +15,21 @@ from itertools import count #itertools es para contar la cantidad de instancias 
 
 class cSuscription():
     _ids = count(0)
+    # md = []
+    messages = []
 
-    def __init__(self, user,symbols):
+    def __init__(self, user, symbols):
         self.id = next(self._ids)  # se cuenta la cantidad de instancias de una clase para imprimir en gsheets
-        self.user=user
-        self.symbols=symbols
-        self.messages=[]
-        self.md=[]
-        self.numMessages=0
+        self.user = user
+        self.symbols = symbols
+        self.sym = ""
+        # self.messages = []
+        # self.md=[]
+        self.numMessages = 0
 
         #self.ticker1=ticker1
         #self.ticker2=ticker2
         headers = {'X-Auth-Token:{token}'.format(token=self.user.token)}
-
-
         self.ws = websocket.WebSocketApp(self.user.activeWSEndpoint,
                                          on_message=self.on_message,
                                          on_error=self.on_error,
@@ -49,7 +50,7 @@ class cSuscription():
         else:
 
             for self.sym in self.symbols:
-                aaa = self.buildMessage(self.sym)
+                aaa = self.buildMessage()
                 self.ws.send(aaa)
 
                 print("Sent Suscription msg", self.sym)
@@ -60,18 +61,16 @@ class cSuscription():
     # def p(self):
     #     print("Cantidad Productos Suscriptos",self.id+1," ", self.user.token)
 
-    #def runWS(self):
-
-
     def on_message(self, message):
+
         self.numMessages += 1
 
         try:
 
-            print("Test rTEST")
+            print("Calling cRofexMessage ")
             q = rMsg.cRofexMessage(message)
-            self.md.append(q.getLastMessage())
-
+            # self.md.append(q.getLastMessage())
+            # print("Len md en cSuscriptV2:", len(self.md))
 
 
         except:
@@ -79,18 +78,18 @@ class cSuscription():
             print("Error al procesar mensaje recibido:--->>> " )
 
     def on_error(self, error):
-        print("Salio por error: ",error)
+        print("Salio por error: ", error)
         self.ws.close()
 
-    def on_close(ws):
+    @staticmethod
+    def on_close():
         print("### connection closed ###")
 
-    def on_open(ws):
+    def on_open(self):
         pass
         #print("WS Conection Open...")
 
-
-    def buildMessage(self, sym):
-        return "{\"type\":\"" + self.user.type_ + "\",\"level\":" + self.user.level_ + ", \"entries\":[\"BI\", \"OF\"],\"products\":[{\"symbol\":\"" + sym + "\",\"marketId\":\"" + self.user.marketId_ + "\"}]}"
+    def buildMessage(self):
+        return "{\"type\":\"" + self.user.type_ + "\",\"level\":" + self.user.level_ + ", \"entries\":[\"BI\", \"OF\"],\"products\":[{\"symbol\":\"" + self.sym + "\",\"marketId\":\"" + self.user.marketId_ + "\"}]}"
 
 
